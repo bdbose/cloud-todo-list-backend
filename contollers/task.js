@@ -3,9 +3,15 @@ const task = require('../models/task');
 
 const getTask = async (req, res) => {
   try {
-    await task.find({ userId: req.body.userId }).then((data) => {
-      res.send({ msg: 'Success', data });
-    });
+    if (!req.body.userId) {
+      await task.find({ deviceId: req.body.deviceId }).then((data) => {
+        res.send({ msg: 'Success', data });
+      });
+    } else {
+      await task.find({ userId: req.body.userId }).then((data) => {
+        res.send({ msg: 'Success', data });
+      });
+    }
   } catch (err) {
     res.status(403).send({ msg: 'Unsuccessful', err });
   }
